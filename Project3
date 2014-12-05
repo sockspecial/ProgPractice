@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int toInt(char);
+int toInt(char); // test comment
 int resto (char cadena[], int divisor);
 char toChar(int);
 void escribeIBAN(char IBAN[]);
