@@ -26,12 +26,7 @@ int main(void)
     dcCCC(entbancaria,sucursal,cuenta,digcontrol);
 
     printf("%s",digcontrol);
-
-
-   // cout << dcCCC(cadena) ;
-
-
-
+    
     return 0;
 }
 
@@ -87,7 +82,7 @@ void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[
     else if (valor == 10)   b = '1';
      else                    b = '0';
 
-    /*calculos el primer digito de control*/
+    /*calculo del primer digito de control*/
     char cadenaAux[3] = {'0','0','\0'};
     x = dcCCCaux(strcat(strcat(cadenaAux,entbancaria),sucursal));
     valor = 11 - (x % 11);
@@ -95,7 +90,7 @@ void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[
     else if (valor == 10)   a = '1';
     else                    a = '0';
 
-    /*almacenamos los resultados obtenisdos*/
+    /*almacenamos los resultados obtenidos*/
     digcontrol[0]= a;
     digcontrol[1]= b;
 }
