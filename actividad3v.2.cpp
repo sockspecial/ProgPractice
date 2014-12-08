@@ -1,3 +1,9 @@
+/*
+Grupo MB_02 Informatica
+...
+*/
+
+
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
@@ -10,16 +16,11 @@ char toChar(int);
 void escribeIBAN(char IBAN[]);
 int dcCCCaux (char cadena[]);
 void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[]);
-
-
-
 void escribeIBAN(char x[]);
 
 void dcIBAN (char cuenta[], char CodigoPais[]) {
     //Anadimos las letras y los dos ceros al final.
     strcat(strcat(cuenta,CodigoPais),"00");
-
-
 }
 
 void reemplazaLetra(char cadena[]) {
@@ -38,15 +39,12 @@ void reemplazaLetra(char cadena[]) {
 
         }
     }
-
-
 }
 
 
 
-int main(void)
+int main(void) 
 {
-
     char entbancaria[5] = "8987";
     char sucursal[6]    = "9876";
     char cuenta[20]     = "8888888888";
@@ -109,14 +107,7 @@ int dcCCCaux (char cadena[]) {
 void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[]) {
     char a, b;
 
-    //calculo del segundo digito de control
-    int x = dcCCCaux(cuenta);
-    int valor = 11 - (x % 11);
-    if      (valor  < 10)   b = toChar(valor);
-    else if (valor == 10)   b = '1';
-    else                    b = '0';
-
-    //calculos el primer digito de control
+    //calculo del primer digito de control
     char cadenaAux[3] = {'0','0','\0'};
     x = dcCCCaux(strcat(strcat(cadenaAux,entbancaria),sucursal));
     valor = 11 - (x % 11);
@@ -124,7 +115,14 @@ void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[
     else if (valor == 10)   a = '1';
     else                    a = '0';
 
+    //calculo del segundo digito de control
+    int x = dcCCCaux(cuenta);
+    int valor = 11 - (x % 11);
+    if      (valor  < 10)   b = toChar(valor);
+    else if (valor == 10)   b = '1';
+    else                    b = '0';
+
     //almacenamos los resultados obtenidos
-    digcontrol[0]= a;
-    digcontrol[1]= b;
+    digcontrol[0] = a;
+    digcontrol[1] = b;
 }
