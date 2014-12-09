@@ -3,8 +3,6 @@ Grupo MB_02 Informatica
 ...
 */
 
-
-#include <iostream>
 #include <string.h>
 #include <stdio.h>
 
@@ -18,45 +16,57 @@ int dcCCCaux (char cadena[]);
 void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[]);
 void escribeIBAN(char x[]);
 
-void dcIBAN (char cuenta[], char CodigoPais[]) {
+void dcIBAN (char cadena[], char CodigoPais[], char dcontrolIBAN[]) {
     //Anadimos las letras y los dos ceros al final.
-    strcat(strcat(cuenta,CodigoPais),"00");
-}
-
-void reemplazaLetra(char cadena[]) {
     int tmax = strlen(cadena);
-    char storage[tmax];
-    char aux[2];
-    int numval;
-    for (int i=0;i<tmax;i++) {
-        numval = toInt(cadena[i]);
-        //Comprobamos si es el elemento i de cadena
-        //una letra entre A y Z mayusculas o no.
-        if (numval>=65 || numval<=90){
-            aux[0] = toChar((int)(numval/10));
-            aux[1] = toChar(numval%10);
-            strcat(storage,aux);
+    char cuenta[tmax];
+    strcpy(cuenta, cadena);
+    strcat(strcat(cuenta,CodigoPais),"00");
 
+    char auxStorage[2*tmax+1];
+    int numval;
+
+    int i=0; int j=0;
+    while (cuenta[i]!='\0') {
+        if (cuenta[i]>='A' && cuenta[i]<='Z') {
+            numval=cuenta[i]-'A'+10;
+            auxStorage[j]=toChar(numval/10);
+            j++;
+            auxStorage[j]=toChar(numval%10);
+            j++; i++;
+        } else {
+            auxStorage[j]=cuenta[i];
+            j++; i++;
         }
     }
+    auxStorage[j]='\0';
+
+    int numero = 98 - resto(auxStorage,97);
+    if (numero<10) {
+        dcontrolIBAN[0]='0';
+        dcontrolIBAN[1]=toChar(numero);
+    } else {
+        dcontrolIBAN[0]=toChar(numero/10);
+        dcontrolIBAN[1]=toChar(numval%10);
+    }
+    dcontrolIBAN[2]='\0';
 }
 
-
-
-int main(void) 
+int main(void)
 {
-    char entbancaria[5] = "8987";
-    char sucursal[6]    = "9876";
-    char cuenta[20]     = "8888888888";
-    char digcontrol[3]  = "";
+    char cadena[50] = "1234"; //entidad bancaria
+    char sucursal[6]    = "5678";
+    char cuenta[11]     = "1234567890";
+    char digcontrol[3]  = "06";
+    char CodigoPais[3]  = "ES";
 
+    strcat(strcat(strcat(cadena,sucursal),digcontrol),cuenta);
 
-    double x = 4.99;
-    char a[2];
+    char dcontrolIBAN[3]= "00"; //{'0','0','\0'};
 
-    printf("%d", (int)x);
+    dcIBAN(cadena,CodigoPais,dcontrolIBAN);
 
-
+    printf("%s",dcontrolIBAN);
 
     return 0;
 }
@@ -106,6 +116,7 @@ int dcCCCaux (char cadena[]) {
 
 void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[]) {
     char a, b;
+    int x, valor;
 
     //calculo del primer digito de control
     char cadenaAux[3] = {'0','0','\0'};
@@ -116,8 +127,8 @@ void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[
     else                    a = '0';
 
     //calculo del segundo digito de control
-    int x = dcCCCaux(cuenta);
-    int valor = 11 - (x % 11);
+    x = dcCCCaux(cuenta);
+    valor = 11 - (x % 11);
     if      (valor  < 10)   b = toChar(valor);
     else if (valor == 10)   b = '1';
     else                    b = '0';
