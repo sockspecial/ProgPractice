@@ -9,12 +9,15 @@ Grupo MB_02 Informatica
 using namespace std;
 
 int toInt(char);
+void EscribeCcc(char ccc[]);
 int resto (char cadena[], int divisor);
 char toChar(int);
 void escribeIBAN(char IBAN[]);
 int dcCCCaux (char cadena[]);
 void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[]);
 void escribeIBAN(char x[]);
+void Leedatos1(char cb[],char cs[],char cc[]);
+void Leedatos2(char cp[],char cdc[]);
 
 void dcIBAN (char cadena[], char CodigoPais[], char dcontrolIBAN[]) {
     //Anadimos las letras y los dos ceros al final.
@@ -42,10 +45,13 @@ void dcIBAN (char cadena[], char CodigoPais[], char dcontrolIBAN[]) {
     auxStorage[j]='\0';
 
     int numero = 98 - resto(auxStorage,97);
-    if (numero<10) {
+    if (numero<10)
+    {
         dcontrolIBAN[0]='0';
         dcontrolIBAN[1]=toChar(numero);
-    } else {
+    }
+    else
+    {
         dcontrolIBAN[0]=toChar(numero/10);
         dcontrolIBAN[1]=toChar(numval%10);
     }
@@ -54,19 +60,21 @@ void dcIBAN (char cadena[], char CodigoPais[], char dcontrolIBAN[]) {
 
 int main(void)
 {
-    char cadena[50] = "1234"; //entidad bancaria
-    char sucursal[6]    = "5678";
-    char cuenta[11]     = "1234567890";
-    char digcontrol[3]  = "06";
-    char CodigoPais[3]  = "ES";
 
+
+    char cadena[50],sucursal[6], cuenta[11], digcontrol[3],CodigoPais[3],CodigodeCuenta[18];
+    Leedatos1(cadena,sucursal,cuenta);
+    dcCCC(cadena,sucursal,cuenta,digcontrol);
     strcat(strcat(strcat(cadena,sucursal),digcontrol),cuenta);
-
+    EscribeCcc(cadena);
+    escribeIBAN(cadena);
     char dcontrolIBAN[3]= "00"; //{'0','0','\0'};
-
+    Leedatos2(CodigoPais,CodigodeCuenta);
     dcIBAN(cadena,CodigoPais,dcontrolIBAN);
+    escribeIBAN(cadena);
 
-    printf("%s",dcontrolIBAN);
+    //printf("%s",dcontrolIBAN);
+
 
     return 0;
 }
@@ -89,6 +97,18 @@ void escribeIBAN(char IBAN[]) {
             printf(" ");
     }
 }
+void EscribeCcc(char ccc[])
+{
+    int i;
+    int longcadena = strlen(ccc);
+    for(i=0;i<longcadena+1;i++){
+    printf("%s",ccc[i-1]);
+    if(i % 4 == 0 && i == 13)
+    printf(" ");
+    }
+}
+
+
 
 int resto (char cadena[], int divisor) {
     int r  = 0;
@@ -114,7 +134,8 @@ int dcCCCaux (char cadena[]) {
     return resultado;
 }
 
-void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[]) {
+void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[])
+ {
     char a, b;
     int x, valor;
 
@@ -136,4 +157,21 @@ void dcCCC (char entbancaria[], char sucursal[], char cuenta[], char digcontrol[
     //almacenamos los resultados obtenidos
     digcontrol[0] = a;
     digcontrol[1] = b;
+}
+void Leedatos1(char cb[],char cs[],char cc[])
+{
+    printf("\nIntroduce codigo banco :");
+    scanf("%s",cb);
+    printf("\nIntrouce codigo sucursal :");
+    scanf("%s",cs);
+    printf("\nIntroduce codigo cuenta :");
+    scanf("%s",cc);
+
+}
+void Leedatos2(char cp[],char cdc[])
+{
+    printf("Introduce codigo de pais :");
+    scanf("%s",cp);
+    printf("Introduce codigo de cuenta :");
+    scanf("%s",cdc);
 }
